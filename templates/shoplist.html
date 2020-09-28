@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shopping List</title>
+</head>
+<body>
+    <h1>Shopping List</h1>
+    <a href="/add-product">+ New Product</a>
+
+    {% if products|length > 0 %}
+    <form action="/update-products">
+    <ol>
+        {% for p in products %}
+        <li style="color: {% if not p.done %} red {% endif %}"><input type="checkbox" {% if p.done %} checked {% endif %} name="product_{{ p.id }}">
+            <img src="{{ p.image }}" alt="image" style="width: 100px">
+            {{ p.name }}</li>
+        {% endfor %}
+    </ol>
+        <button>Update</button>
+        </form>
+    {% else %}
+        <h2>Empty List</h2>
+    {% endif %}
+</body>
+</html>
