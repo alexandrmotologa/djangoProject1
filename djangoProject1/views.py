@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from . import models
 
 last_id = 13
 product_list = [
@@ -13,24 +14,17 @@ def homepage(request):
     return HttpResponse("Homepage")
 
 def shoplist(request):
-
-    return render(request,'shoplist.html', {'products': product_list})
+    p_list = models.Product.objects.all()
+    return render(request,'shoplist.html', {'products': p_list})
 
 def addProduct(request):
     return render(request, 'add-product-form.html')
 
 def saveProduct(request):
     global last_id
-
+    product = models.Product(last_id, request.GET['product_name'],'', False)
+    product.save()
     last_id +=1
-    new_product = {
-        'id': last_id,
-        'name': request.GET['product_name'],
-        'image': '',
-        'done': False
-    }
-
-    product_list.append(new_product)
     return HttpResponseRedirect('/shoplist')
 
 def updateProducts(request):
